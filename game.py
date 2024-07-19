@@ -1,20 +1,31 @@
 import pygame
-from pygame.locals import *
+#from pygame.locals import *
 from board import boards
 import copy
 import math
 pygame.init()
 
 
-WIDTH = 700
-HEIGHT = 750
+WIDTH = 900
+HEIGHT = 950
 color = 'blue'
-screen = pygame.display.set_mode([WIDTH, HEIGHT])
+screen = pygame.display.set_mode([WIDTH, HEIGHT], pygame.RESIZABLE)
 timer = pygame.time.Clock()
 fps = 60
 PI = math.pi
 font = pygame.font.Font('Helvetica.ttc', 20)
 level = copy.deepcopy(boards)
+direction = 0
+counter = 0
+
+#Setting up player images
+player_images = []
+for i in range(1, 5):
+    player_images.append(pygame.transform.scale(pygame.image.load(f'assets/player_images/{i}.png'), (45, 45)))
+    
+# Player starting position (Hit and Trial)
+player_x = 450
+player_y = 663
 
 
 def draw_board():
@@ -51,13 +62,29 @@ def draw_board():
                 pygame.draw.line(screen, 'white', (j * num2, i * num1 + (0.5 * num1)),
                                  (j * num2 + num2, i * num1 + (0.5 * num1)), 3)
             
-
+def draw_player():
+    # 0-RIGHT, 1-LEFT, 2-UP, 3-DOWN
+    if direction == 0:
+        screen.blit(player_images[counter // 5], (player_x, player_y))
+    elif direction == 1:
+        screen.blit(pygame.transform.flip(player_images[counter // 5], True, False), (player_x, player_y))
+    elif direction == 2:
+        screen.blit(pygame.transform.rotate(player_images[counter // 5], 90), (player_x, player_y))
+    elif direction == 3:
+        screen.blit(pygame.transform.rotate(player_images[counter // 5], 270), (player_x, player_y))
 
 run = True
 while run:
     timer.tick(fps)
+    # Animation logic for pacaman using counter for that
+    if counter < 19:
+        counter += 1
+    else:
+        counter = 0
+    
     screen.fill('black')
     draw_board()
+    draw_player()
     pygame.display.flip()   #Very important to update display buffer
     
     
