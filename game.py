@@ -91,5 +91,15 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+        # Logic to change direction of pacman
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RIGHT:
+                direction = 0
+            if event.key == pygame.K_LEFT:
+                direction = 1
+            if event.key == pygame.K_UP:
+                direction = 2
+            if event.key == pygame.K_DOWN:
+                direction = 3
             
 pygame.quit()
