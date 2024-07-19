@@ -17,6 +17,7 @@ font = pygame.font.Font('Helvetica.ttc', 20)
 level = copy.deepcopy(boards)
 direction = 0
 counter = 0
+flicker = False
 
 #Setting up player images
 player_images = []
@@ -37,7 +38,7 @@ def draw_board():
         for j in range(len(level[i])):
             if level[i][j] == 1:
                 pygame.draw.circle(screen, 'white', (j * num2 + (0.5 * num2), i * num1 + (0.5 * num1)), 4)
-            if level[i][j] == 2:
+            if level[i][j] == 2 and not flicker:
                 pygame.draw.circle(screen, 'white', (j * num2 + (0.5 * num2), i * num1 + (0.5 * num1)), 10)
             if level[i][j] == 3:
                 pygame.draw.line(screen, color, (j * num2 + (0.5 * num2), i * num1),
@@ -79,8 +80,10 @@ while run:
     # Animation logic for pacaman using counter for that
     if counter < 19:
         counter += 1
+        flicker = False
     else:
         counter = 0
+        flicker = True
     
     screen.fill('black')
     draw_board()
